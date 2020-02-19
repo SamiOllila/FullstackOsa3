@@ -1,8 +1,10 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
+const PhoneNumber = require('./models/phoneNumber')
 
 app.use(express.static('build'))
 app.use(cors())
@@ -52,7 +54,9 @@ app.get('/info', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
+  PhoneNumber.find({}).then(phoneNumbers => {
+    res.json(phoneNumbers)
+  })
 })
 
 app.delete(`/api/persons/:id`, (req, res) => {
