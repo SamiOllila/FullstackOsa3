@@ -87,13 +87,16 @@ app.post('/api/persons', (req, res) => {
     })
     return
   }
-  newPerson = {
+  const phoneNumber = new PhoneNumber({
     name: person.name,
     number: person.number,
-    id: Math.floor(1000*Math.random()),
-  }
-  persons = persons.concat(newPerson)
-  res.json(person)
+    //id: Math.floor(1000*Math.random()),
+    })
+  
+  //persons = persons.concat(newPerson)
+  phoneNumber.save().then(savedNumber => {
+    res.json(savedNumber)
+  })
 })
 
 const PORT = process.env.PORT || 3001
