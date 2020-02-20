@@ -103,6 +103,14 @@ app.post('/api/persons', (req, res) => {
   })
 })
 
+app.put(`/api/persons/:id`, (req, res) => {
+  const person = req.body
+  PhoneNumber.findByIdAndUpdate(req.params.id, person, { new: true })
+    .then(updatedNumber => {
+      res.json(updatedNumber)
+    })
+})
+
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
