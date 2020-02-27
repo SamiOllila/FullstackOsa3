@@ -15,42 +15,22 @@ morgan.token('body', (req,res) => {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-let persons = [
-  {
-    "name": "Arto Hellas",
-    "number": "040-123456",
-    "id": 1
-  },
-  {
-    "name": "Ada Lovelace",
-    "number": "39-44-5323523",
-    "id": 2
-  },
-  {
-    "name": "Dan Abramov",
-    "number": "12-43-234345",
-    "id": 3
-  },
-  {
-    "name": "Mary Poppendieck",
-    "number": "39-23-6423122",
-    "id": 4
-  }
-]
 
 app.get(`/api/persons/:id`, (req,res) => {
-  const id = Number(req.params.id)
-  const person = persons.find(person => person.id === id)
-
-  if(person) {
-    res.json(person)
-  } else {
-    res.status(404).end()
-  }
+  PhoneNumber.findById(req.params.id)
+    .then(phoneNumber => {
+      res.json(phoneNumber)
+    })
+    .catch(error => {
+      console.log(error)
+      res.status(404).end()
+    })
 })
 
 app.get('/info', (req, res) => {
-  res.send(`<div><p>Phonebook has info for ${persons.length} people</p></div> <div><p>${Date()}</p><div/>`)
+  PhoneNumber.find({}).then(phoneNumbers => {
+    res.send(`<div><p>Phonebook has info for ${phoneNumbers.length} people</p></div> <div><p>${Date()}</p><div/>`)
+  })
 })
 
 app.get('/api/persons', (req, res) => {
@@ -85,19 +65,12 @@ app.post('/api/persons', (req, res) => {
     })
     return
   }
-  if (persons.map(person => person.name).includes(person.name)) {
-    res.status(400).json({
-      error: 'Name must be unique.'
-    })
-    return
-  }
+  
   const phoneNumber = new PhoneNumber({
     name: person.name,
     number: person.number,
-    //id: Math.floor(1000*Math.random()),
     })
   
-  //persons = persons.concat(newPerson)
   phoneNumber.save().then(savedNumber => {
     res.json(savedNumber)
   })
@@ -108,6 +81,10 @@ app.put(`/api/persons/:id`, (req, res) => {
   PhoneNumber.findByIdAndUpdate(req.params.id, person, { new: true })
     .then(updatedNumber => {
       res.json(updatedNumber)
+    })
+    .catch(error => {
+      console.log(error)
+      res.status(400).end()
     })
 })
 
