@@ -17,11 +17,15 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const phoneNumberSchema = new mongoose.Schema({
   name: {
-    type: String, 
+    type: String,
+    minlength: 3,
     required: true, 
     unique: true
   },
-  number: String,
+  number: {
+    type: String,
+    minlength: 8
+  }
 })
 phoneNumberSchema.plugin(uniqueValidator)
 
