@@ -63,7 +63,7 @@ app.post('/api/persons', (req, res, next) => {
   const phoneNumber = new PhoneNumber({
     name: person.name,
     number: person.number,
-    })
+  })
   
   phoneNumber.save()
     .then(savedNumber => {

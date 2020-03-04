@@ -11,6 +11,7 @@
   "author": "Sami Ollila",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^6.8.0",
     "nodemon": "^2.0.2"
   },
   "dependencies": {
